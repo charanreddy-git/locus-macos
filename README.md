@@ -196,3 +196,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 **Made with ❤️ for macOS productivity enthusiasts**
 # locus-macos
+# locus-macos

@@ -1,0 +1,117 @@
+name: Build and Test macOS
+
+on:
+  push:
+    branches: [ main, port/macos-arm64 ]
+    paths:
+      - 'src-tauri/**'
+      - 'src/**'
+      - 'Cargo.toml'
+      - 'package.json'
+      - '.github/workflows/macos.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src-tauri/**'
+      - 'src/**'
+      - 'Cargo.toml'
+      - 'package.json'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test-tauri:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest' # for Arm based macs
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-13' # for Intel based macs  
+            args: '--target x86_64-apple-darwin'
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up the linux builds
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin' || matrix.platform == 'macos-13' && 'x86_64-apple-darwin' || '' }}
+
+      - name: Install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04' # This if conditional ensures this only runs on ubuntu-22.04
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libx11-dev
+
+      - name: Install frontend dependencies
+        run: bun install
+
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: ${{ matrix.args }}
+
+  test-rust:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+
+      - name: Run Rust tests
+        run: |
+          cd src-tauri
+          cargo test --target aarch64-apple-darwin
+
+      - name: Check Rust formatting
+        run: |
+          cd src-tauri  
+          cargo fmt -- --check
+
+      - name: Run Clippy
+        run: |
+          cd src-tauri
+          cargo clippy --target aarch64-apple-darwin -- -D warnings
+
+  benchmark:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+
+      - name: Install frontend dependencies
+        run: bun install
+
+      - name: Build release version
+        run: |
+          cd src-tauri
+          cargo build --release --target aarch64-apple-darwin
+
+      - name: Performance benchmark
+        run: |
+          echo "Memory usage and CPU benchmarks would go here"
+          # Future: Add actual performance testing
+          echo "✅ Build completed successfully for Apple Silicon"
