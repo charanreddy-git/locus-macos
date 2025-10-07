@@ -1,4 +1,4 @@
-# Locus
+# Locus macOS
 
 > **Attribution**: This project is based on [locus](https://github.com/Sushants-Git/locus)
 
@@ -23,7 +23,7 @@ Built specifically for **macOS Apple Silicon** with native window detection and 
 ### Option 1: Download Pre-built App (Recommended)
 
 1. **Download the latest release**
-   - Visit the [Releases page](https://github.com/charanreddy-git/locus/releases)
+   - Visit the [Releases page](https://github.com/charanreddy-git/locus-macos/releases)
    - Download `locus_0.2.2_aarch64.dmg` for Apple Silicon
 
 2. **Install the app**
@@ -47,8 +47,8 @@ If you prefer to build from source or want the latest features:
 #### Build Steps
 ```bash
 # Clone the repository
-git clone https://github.com/charanreddy-git/locus.git
-cd locus
+git clone https://github.com/charanreddy-git/locus-macos.git
+cd locus-macos
 
 # Install dependencies
 bun install  # or: npm install
@@ -156,8 +156,8 @@ sudo xattr -rd com.apple.quarantine /Applications/locus.app
 
 ### Getting Help
 
-- **Issues**: [GitHub Issues](https://github.com/charanreddy-git/locus/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/charanreddy-git/locus/discussions)
+- **Issues**: [GitHub Issues](https://github.com/charanreddy-git/locus-macos/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/charanreddy-git/locus-macos/discussions)
 - **Email**: Open an issue for direct support
 
 ## 📱 Screenshots
@@ -190,10 +190,8 @@ For development setup, see the build instructions above.
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
+MIT License - see [LICENSE](LICENSE.md) for details.
 
 ---
 
 **Made with ❤️ for macOS productivity enthusiasts**
-# locus-macos
-# locus-macos
