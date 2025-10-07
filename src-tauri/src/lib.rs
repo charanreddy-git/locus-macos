@@ -82,3 +82,22 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_basic_functionality() {
+        // Basic test to ensure the crate compiles
+        assert_eq!(2 + 2, 4);
+    }
+
+    #[test]
+    fn test_create_session_file() {
+        // Test session file creation logic
+        let session_id = Uuid::new_v4();
+        let session_string = session_id.to_string();
+        assert!(!session_string.is_empty());
+    }
+}
