@@ -4,6 +4,10 @@
 
 **A productivity tracker for macOS that reveals where your time truly goes.**
 
+<a href="https://github.com/charanreddy-git/locus-macos/releases/latest/download/locus_0.2.2_aarch64.dmg" target="_blank">
+   <img src="https://img.shields.io/badge/Download-Locus%20for%20Apple%20Silicon-1a73e8?style=for-the-badge&logo=apple" alt="Download Locus for Apple Silicon" />
+</a>
+
 Locus has 2 simple goals: *tracking your focused moments* and *unveiling where the rest of your time silently flows.*
 
 Built specifically for **macOS Apple Silicon** with native window detection and seamless activity tracking.
@@ -20,20 +24,11 @@ Built specifically for **macOS Apple Silicon** with native window detection and 
 
 ## 📥 Installation
 
-### Option 1: Download Pre-built App (Recommended)
+### Option 1: One-Click Download (Recommended)
 
-1. **Download the latest release**
-   - Visit the [Releases page](https://github.com/charanreddy-git/locus-macos/releases)
-   - Download `locus_0.2.2_aarch64.dmg` for Apple Silicon
-
-2. **Install the app**
-   - Open the downloaded `.dmg` file
-   - Drag `locus.app` to your Applications folder
-   - Eject the disk image
-
-3. **Launch Locus**
-   - Open Applications and double-click Locus
-   - Or press `Cmd+Space`, type "Locus", and press Enter
+1. **Download** – Click the badge above or [grab the latest DMG](https://github.com/charanreddy-git/locus-macos/releases/latest/download/locus_0.2.2_aarch64.dmg)
+2. **Install** – Open the `.dmg`, drag `locus.app` into `Applications`, then eject the disk image
+3. **Launch** – Open the app from `Applications` or Spotlight (`Cmd+Space`, type "Locus")
 
 ### Option 2: Build from Source
 
