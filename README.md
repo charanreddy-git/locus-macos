@@ -26,9 +26,16 @@ Built specifically for **macOS Apple Silicon** with native window detection and 
 
 ### Option 1: One-Click Download (Recommended)
 
-1. **Download** – Click the badge above or [grab the latest DMG](https://github.com/charanreddy-git/locus-macos/releases/latest/download/locus_0.2.2_aarch64.dmg)
-2. **Install** – Open the `.dmg`, drag `locus.app` into `Applications`, then eject the disk image
-3. **Launch** – Open the app from `Applications` or Spotlight (`Cmd+Space`, type "Locus")
+1. **Download** – Click the badge above or [grab the latest DMG](https://github.com/charanreddy-git/locus-macos/releases/latest/download/locus_0.2.2_aarch64.dmg).
+2. **Install** – Open the `.dmg`, drag `locus.app` into `Applications`, then eject the disk image.
+3. **Launch** – Open the app from `Applications` or Spotlight (`Cmd+Space`, type "Locus").
+4. **Let macOS trust it** – If you see a "damaged" or "unidentified developer" warning, run:
+
+   ```bash
+   sudo xattr -dr com.apple.quarantine /Applications/locus.app
+   ```
+
+   (Run once after moving the app to `Applications`; it clears Gatekeeper's quarantine flag.)
 
 ### Option 2: Build from Source
 
