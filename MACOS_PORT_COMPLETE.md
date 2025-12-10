@@ -154,8 +154,7 @@ bun tauri build --target aarch64-apple-darwin
 ### **Future Enhancements**
 1. **Code Signing**: Add developer certificate for distribution
 2. **Notarization**: Apple notarization for enhanced security
-3. **Intel Support**: Add x86_64 target for Intel Macs
-4. **Native APIs**: Replace AppleScript with CoreGraphics for better performance
+3. **Native APIs**: Replace AppleScript with CoreGraphics for better performance
 
 ---
 

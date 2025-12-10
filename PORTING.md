@@ -92,8 +92,7 @@ Locus has been successfully ported from Linux/X11 to macOS Apple Silicon (arm64)
 
 ### Compatibility
 - **Minimum macOS Version**: macOS 10.15 (Catalina) due to CoreGraphics API requirements
-- **Architecture**: Apple Silicon (arm64) only in current implementation
-- **Intel Support**: Can be added by including `x86_64` in build targets
+- **Architecture**: Apple Silicon (arm64) only
 
 ## Testing Results
 
@@ -119,9 +118,8 @@ Locus has been successfully ported from Linux/X11 to macOS Apple Silicon (arm64)
 4. **Dock Integration**: Custom dock badge for activity status
 
 ### Known Upgrade Paths
-1. **Intel Support**: Add x86_64 target for Intel Mac compatibility
-2. **Wayland Support**: When returning to Linux development
-3. **Windows Support**: Similar porting approach could work for Windows
+1. **Wayland Support**: When returning to Linux development
+2. **Windows Support**: Similar porting approach could work for Windows
 
 ## Build Instructions
 

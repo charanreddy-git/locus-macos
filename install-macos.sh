@@ -22,7 +22,6 @@ fi
 # Check if we're on Apple Silicon
 if [[ "$(uname -m)" != "arm64" ]]; then
     echo "❌ This installer is for Apple Silicon Macs only"
-    echo "   Please use the Intel version if available"
     exit 1
 fi
 

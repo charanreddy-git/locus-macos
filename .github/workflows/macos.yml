@@ -26,10 +26,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest' # for Arm based macs
+            - platform: 'macos-latest' # Apple Silicon only
             args: '--target aarch64-apple-darwin'
-          - platform: 'macos-13' # for Intel based macs  
-            args: '--target x86_64-apple-darwin'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -48,7 +46,7 @@ jobs:
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin' || matrix.platform == 'macos-13' && 'x86_64-apple-darwin' || '' }}
+            targets: aarch64-apple-darwin
 
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This if conditional ensures this only runs on ubuntu-22.04
