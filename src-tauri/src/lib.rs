@@ -46,7 +46,7 @@ fn save_file(from: String, to: String, target_folder: String) -> Result<String, 
 
     let destination_file_path = destination_path.join(unique_file_name);
 
-    fs::copy(&source_path, &destination_file_path)
+    fs::copy(source_path, &destination_file_path)
         .map_err(|e| format!("Unable to copy file to destination: {:?}", e))?;
 
     destination_file_path

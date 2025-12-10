@@ -20,22 +20,24 @@ pub fn stream_macos(
         let mut old_window_info = ActiveWindow::none();
         let mut consecutive_failures = 0;
         const MAX_FAILURES: u32 = 5;
-        
+
         loop {
             if *cancel_flag.lock().await {
                 break;
             }
 
-            let window_info = get_macos_active_window_info()
-                .unwrap_or_else(|error| {
-                    consecutive_failures += 1;
-                    if consecutive_failures <= MAX_FAILURES {
-                        eprintln!("Error getting window info (attempt {}): {:?}", consecutive_failures, error);
-                    }
-                    
-                    // If we keep failing, try to get basic app info as fallback
-                    get_basic_app_info().unwrap_or_else(|_| ActiveWindow::none())
-                });
+            let window_info = get_macos_active_window_info().unwrap_or_else(|error| {
+                consecutive_failures += 1;
+                if consecutive_failures <= MAX_FAILURES {
+                    eprintln!(
+                        "Error getting window info (attempt {}): {:?}",
+                        consecutive_failures, error
+                    );
+                }
+
+                // If we keep failing, try to get basic app info as fallback
+                get_basic_app_info().unwrap_or_else(|_| ActiveWindow::none())
+            });
 
             // Reset failure counter on success
             if window_info.title != "none" {
@@ -45,13 +47,14 @@ pub fn stream_macos(
             // Only emit if the window info has actually changed
             if window_info != old_window_info {
                 old_window_info = window_info.clone();
-                
+
                 // Stream the window info to the frontend
-                if let Err(e) = app.emit_to(EventTarget::app(), "active-window-title", window_info) {
+                if let Err(e) = app.emit_to(EventTarget::app(), "active-window-title", window_info)
+                {
                     eprintln!("Error emitting window info: {:?}", e);
                 }
             }
-            
+
             sleep(sleep_duration).await;
         }
     });
@@ -61,7 +64,7 @@ pub fn stream_macos(
 
 fn get_macos_active_window_info() -> Result<ActiveWindow, MacOSError> {
     // Try multiple approaches in order of reliability
-    
+
     // 1. Try native CoreGraphics approach first (most reliable)
     if let Ok(native_info) = crate::window_info::native_macos::get_native_window_info() {
         if !native_info.title.is_empty() && native_info.title != "Unknown Application" {
@@ -71,14 +74,21 @@ fn get_macos_active_window_info() -> Result<ActiveWindow, MacOSError> {
 
     // 2. Try the enhanced AppleScript approach
     if let Ok(enhanced_info) = get_enhanced_window_info() {
-        if !enhanced_info.title.is_empty() && enhanced_info.title != "No Window" && !enhanced_info.title.contains("Error|") && enhanced_info.title != "Active" {
+        if !enhanced_info.title.is_empty()
+            && enhanced_info.title != "No Window"
+            && !enhanced_info.title.contains("Error|")
+            && enhanced_info.title != "Active"
+        {
             return Ok(enhanced_info);
         }
     }
 
     // 3. Try browser-specific detection for browsers
     if let Ok(browser_info) = get_browser_tab_info() {
-        if !browser_info.title.is_empty() && browser_info.title != "No Window" && !browser_info.title.contains("Error|") {
+        if !browser_info.title.is_empty()
+            && browser_info.title != "No Window"
+            && !browser_info.title.contains("Error|")
+        {
             return Ok(browser_info);
         }
     }
@@ -199,12 +209,14 @@ return "Unknown|No Browser Tab"
         .arg("-e")
         .arg(script)
         .output()
-        .map_err(|e| MacOSError::CoreGraphicsError(format!("Failed to run browser AppleScript: {}", e)))?;
+        .map_err(|e| {
+            MacOSError::CoreGraphicsError(format!("Failed to run browser AppleScript: {}", e))
+        })?;
 
     if output.status.success() {
         let result = String::from_utf8_lossy(&output.stdout);
         let parts: Vec<&str> = result.trim().split('|').collect();
-        
+
         if parts.len() >= 2 && parts[0] != "Unknown" {
             return Ok(ActiveWindow {
                 class: parts[0].to_string(),
@@ -308,12 +320,14 @@ end tell
         .arg("-e")
         .arg(script)
         .output()
-        .map_err(|e| MacOSError::CoreGraphicsError(format!("Failed to run enhanced AppleScript: {}", e)))?;
+        .map_err(|e| {
+            MacOSError::CoreGraphicsError(format!("Failed to run enhanced AppleScript: {}", e))
+        })?;
 
     if output.status.success() {
         let result = String::from_utf8_lossy(&output.stdout);
         let parts: Vec<&str> = result.trim().split('|').collect();
-        
+
         if parts.len() >= 2 {
             return Ok(ActiveWindow {
                 class: parts[0].to_string(),
@@ -373,7 +387,9 @@ end tell
         .arg("-e")
         .arg(script)
         .output()
-        .map_err(|e| MacOSError::CoreGraphicsError(format!("Failed to run general AppleScript: {}", e)))?;
+        .map_err(|e| {
+            MacOSError::CoreGraphicsError(format!("Failed to run general AppleScript: {}", e))
+        })?;
 
     if !output.status.success() {
         return Err(MacOSError::CoreGraphicsError(
@@ -407,7 +423,9 @@ end tell
         .arg("-e")
         .arg(script)
         .output()
-        .map_err(|e| MacOSError::CoreGraphicsError(format!("Failed to run basic AppleScript: {}", e)))?;
+        .map_err(|e| {
+            MacOSError::CoreGraphicsError(format!("Failed to run basic AppleScript: {}", e))
+        })?;
 
     if output.status.success() {
         let app_name = String::from_utf8_lossy(&output.stdout).trim().to_string();
@@ -421,4 +439,3 @@ end tell
 
     Err(MacOSError::NoActiveWindow)
 }
-

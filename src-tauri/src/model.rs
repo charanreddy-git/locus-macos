@@ -1,6 +1,6 @@
 use serde::Serialize;
-use thiserror::Error;
 use std::sync::Arc;
+use thiserror::Error;
 use tokio::sync::Mutex;
 
 pub struct StreamState {
